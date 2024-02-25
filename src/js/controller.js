@@ -21,7 +21,6 @@ import { MODAL_CLOSE_SEC } from './config.js';
 const controlRecipes = async () => {
   try {
     const id = window.location.hash.slice(1);
-    // console.log(id);
 
     if (!id) return;
     recipeView.renderSpinner();
@@ -36,7 +35,6 @@ const controlRecipes = async () => {
     // 2) Rendering Recipe
     recipeView.render(model.state.recipe);
   } catch (e) {
-    console.log(e);
     recipeView.renderError();
   }
 };
@@ -58,11 +56,9 @@ const controlSearchResults = async function () {
     resultsView.render(model.getSearchResultsPage());
 
     // Render pagination buttons
-    console.log(model.state.search);
-
     paginationView.render(model.state.search);
   } catch (e) {
-    console.log(e);
+    throw e;
   }
 };
 
@@ -70,7 +66,6 @@ const controlPagination = function (goToPage) {
   // 1) Render NEW results
 
   resultsView.render(model.getSearchResultsPage(goToPage));
-  console.log(model.state.search);
 
   // Render NEW pagination buttons
 
@@ -104,8 +99,6 @@ const controlAddRecipe = async function (newRecipe) {
   try {
     // Show loading spinner
     addRecipeView.renderSpinner();
-
-    console.log(newRecipe);
 
     // Upload the new recipe data
     await model.uploadRecipe(newRecipe);

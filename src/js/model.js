@@ -31,15 +31,13 @@ const createRecipeObject = function (data) {
 export const loadRecipe = async function (id) {
   try {
     const data = await AJAX(`${API_URL}/${id}?key=${KEY}`);
-    // console.log(res, data);
+
     state.recipe = createRecipeObject(data);
 
     state.recipe.bookmarked = state.bookmarks.some(b => b.id === id)
       ? true
       : false;
   } catch (e) {
-    console.log(e);
-
     throw e;
   }
 };
@@ -61,7 +59,6 @@ export const loadSearchResults = async function (query) {
       };
     });
   } catch (e) {
-    console.log(e);
     throw e;
   }
 };
@@ -110,7 +107,6 @@ const init = function () {
 };
 
 init();
-console.log(state);
 
 const clearBookmarks = function () {
   localStorage.clear('bookmarks');
@@ -143,9 +139,8 @@ export const uploadRecipe = async function (newRecipe) {
       ingredients,
     };
 
-    console.log(recipe);
     const data = await AJAX(`${API_URL}?key=${KEY}`, recipe);
-    console.log(data);
+
     state.recipe = createRecipeObject(data);
     addBookmark(state.recipe);
   } catch (e) {
