@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
     "start": "parcel index.html",
-    "build": "parcel build index.html --dist-dir ./dist"
+    "prebuild-dev": "shx rm -rf dist/*",
+    "build-dev": "parcel build index.html --no-optimize --public-url ./",
+    "prebuild": "shx rm -rf dist/*",
+    "build": "parcel build index.html --public-url ./",
+    "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
   },
   "author": "",
   "license": "ISC",
@@ -20,12 +22,14 @@
     "parcel": "^2.11.0",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
+    "shx": "^0.3.4",
     "stream-browserify": "^3.0.0"
   },
   "dependencies": {
     "core-js": "^3.36.0",
     "dotenv": "^16.4.5",
     "fracty": "^1.0.11",
+    "push-dir": "^0.4.1",
     "regenerator-runtime": "^0.14.1"
   }
 }
