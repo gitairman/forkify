@@ -21,7 +21,7 @@ export default class View {
 
     if (!render) return markup;
 
-    this._clear();
+    this.clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
   }
 
@@ -61,7 +61,7 @@ export default class View {
           </svg>
         </div>
   `;
-    this._clear();
+    this.clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
   }
 
@@ -76,7 +76,7 @@ export default class View {
             <p>${message}</p>
           </div>
     `;
-    this._clear();
+    this.clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
   }
 
@@ -91,7 +91,7 @@ export default class View {
             <p>${message}</p>
           </div>
     `;
-    this._clear();
+    this.clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
   }
 
@@ -99,7 +99,7 @@ export default class View {
     ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));
   }
 
-  _clear() {
+  clear() {
     this._parentEl.innerHTML = '';
   }
 }

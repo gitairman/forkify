@@ -3,6 +3,7 @@ import icons from '../../img/icons.svg';
 
 class PaginationView extends View {
   _parentEl = document.querySelector('.pagination');
+  _errorMessage = '';
 
   addHandlerClick(handler) {
     this._parentEl.addEventListener('click', function ({ target }) {
@@ -26,6 +27,12 @@ class PaginationView extends View {
     // Page 1, and there are other pages
     if (curPage === 1 && numPages > 1) {
       return `
+          <button class="btn--inline pagination__btn--page" disabled>
+            <span>First Page</span>
+          </button>
+        <button class="btn--inline pagination__btn--page" disabled>
+            <span>${curPage} of ${numPages}</span>
+        </button>
       <button data-goto="${
         curPage + 1
       }" class="btn--inline pagination__btn--next">
@@ -48,6 +55,12 @@ class PaginationView extends View {
             </svg>
             <span>Page ${curPage - 1}</span>
           </button>
+          <button class="btn--inline pagination__btn--page" disabled>
+            <span>${curPage} of ${numPages}</span>
+          </button>
+          <button class="btn--inline pagination__btn--page" disabled>
+            <span>Last Page</span>
+          </button>
       `;
     }
 
@@ -61,6 +74,9 @@ class PaginationView extends View {
               <use href="${icons}#icon-arrow-left"></use>
             </svg>
             <span>Page ${curPage - 1}</span>
+          </button>
+          <button class="btn--inline pagination__btn--page" disabled>
+            <span>${curPage} of ${numPages}</span>
           </button>
           <button data-goto="${
             curPage + 1

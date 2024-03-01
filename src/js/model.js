@@ -9,6 +9,8 @@ export const state = {
     results: [],
     page: 1,
     resultsPerPage: RES_PER_PAGE,
+    sort: false, // true is ascending, false is descending
+    sortBy: '',
   },
   bookmarks: [],
 };
@@ -46,8 +48,14 @@ export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
     state.search.page = 1;
+    state.search.dir = false;
 
     const { data } = await AJAX(`${API_URL}?search=${query}&key=${KEY}`);
+
+    if (data.recipes.length === 0) {
+      state.search.results = [];
+      throw new Error();
+    }
 
     state.search.results = data.recipes.map(recipe => {
       return {

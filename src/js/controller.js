@@ -9,6 +9,7 @@ import addRecipeView from './views/addRecipeView.js';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { MODAL_CLOSE_SEC } from './config.js';
+import sortView from './views/sortView.js';
 
 // if (module.hot) {
 //   module.hot.accept();
@@ -46,17 +47,17 @@ const controlSearchResults = async function () {
     // 1) Get search query
     const query = searchView.getQuery();
 
-    if (!query) return;
-
     // 2) Load search results
     await model.loadSearchResults(query);
 
     // 3) Render results
-
     resultsView.render(model.getSearchResultsPage());
 
     // Render pagination buttons
     paginationView.render(model.state.search);
+
+    // Render sort buttons
+    sortView.render(model.state.search);
   } catch (e) {
     throw e;
   }
@@ -64,11 +65,9 @@ const controlSearchResults = async function () {
 
 const controlPagination = function (goToPage) {
   // 1) Render NEW results
-
   resultsView.render(model.getSearchResultsPage(goToPage));
 
   // Render NEW pagination buttons
-
   paginationView.render(model.state.search);
 };
 
@@ -124,6 +123,30 @@ const controlAddRecipe = async function (newRecipe) {
   }
 };
 
+const controlSortResults = function (sortBy) {
+  let d;
+  if (sortBy === model.state.search.sortBy) {
+    d = model.state.search.dir = !model.state.search.dir;
+  } else {
+    model.state.search.sortBy = sortBy;
+    d = model.state.search.dir = true;
+  }
+
+  model.state.search.results.sort((a, b) => {
+    const strA = a[sortBy].toUpperCase(),
+      strB = b[sortBy].toUpperCase();
+    if (strA < strB) return d ? -1 : 1;
+    if (strA > strB) return d ? 1 : -1;
+    return 0;
+  });
+
+  // 3) Render results & sort options
+  resultsView.render(model.getSearchResultsPage());
+
+  // Render pagination buttons
+  paginationView.render(model.state.search);
+};
+
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
@@ -132,5 +155,6 @@ const init = function () {
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
   addRecipeView.addHandlerUpload(controlAddRecipe);
+  sortView.addHandlerSort(controlSortResults);
 };
 init();
